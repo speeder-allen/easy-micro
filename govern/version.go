@@ -21,6 +21,26 @@ func (v Version) String() string {
 	return version
 }
 
+func (v Version) Equal(version Version) bool {
+	return v.Major == version.Major && v.Minor == version.Minor && v.Build == version.Build && v.Tag == version.Tag
+}
+
+func (v Version) LessThan(version Version) bool {
+	return v.Major < version.Major || (v.Major == version.Major && (v.Minor < version.Minor || (v.Minor == version.Minor && (v.Build < version.Build || (v.Build == version.Build && v.Tag < version.Tag)))))
+}
+
+func (v Version) GreaterThan(version Version) bool {
+	return version.LessThan(v)
+}
+
+func (v Version) LessOrEqualThan(version Version) bool {
+	return v.Equal(version) || v.LessThan(version)
+}
+
+func (v Version) GreaterOrEqualThan(version Version) bool {
+	return v.Equal(version) || v.GreaterThan(version)
+}
+
 type VersionTag uint8
 
 const (
